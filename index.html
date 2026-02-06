@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Asistencias</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide-react"></script>
+</head>
+<body class="bg-slate-50">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { 
+            Building2, LogOut, Clock, User, 
+            Users, CheckCircle, XCircle, AlarmClock 
+        } = lucide;
+
+        function App() {
+            const [time, setTime] = useState(new Date());
+
+            // Reloj en tiempo real
+            useEffect(() => {
+                const timer = setInterval(() => setTime(new Date()), 1000);
+                return () => clearInterval(timer);
+            }, []);
+
+            const formatDate = (date) => {
+                return date.toLocaleDateString('es-ES', { 
+                    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' 
+                });
+            };
+
+            const formatTime = (date) => {
+                return date.toLocaleTimeString('es-ES', { 
+                    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false 
+                });
+            };
+
+            return (
+                <div className="min-h-screen">
+                    {/* Header */}
+                    <header className="bg-white border-b px-8 py-4 flex justify-between items-center shadow-sm">
+                        <div className="flex items-center gap-3">
+                            <div className="bg-blue-600 p-2 rounded-lg text-white">
+                                <Building2 size={24} />
+                            </div>
+                            <div>
+                                <h1 className="text-xl font-bold text-slate-800">Sistema de Asistencias</h1>
+                                <p className="text-xs text-slate-500 font-medium">Gestión de asistencia de empleados</p>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <div className="text-right">
+                                <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Administrador</p>
+                                <p className="text-sm font-bold text-slate-700">#RCPR7273</p>
+                            </div>
+                            <button className="flex items-center gap-2 border rounded-md px-3 py-1.5 text-sm font-semibold hover:bg-slate-50">
+                                <LogOut size={16} /> Cerrar Sesión
+                            </button>
+                        </div>
+                    </header>
+
+                    {/* Nav Tabs */}
+                    <div className="px-8 mt-6">
+                        <div className="flex gap-8 border-b">
+                            {['Registro', 'Empleados', 'Historial', 'Estadísticas'].map((tab, i) => (
+                                <button key={tab} className={`pb-2 px-1 text-sm font-semibold ${i === 0 ? 'text-blue-600 border-b-2 border-blue-600' : 'text-slate-400 hover:text-slate-600'}`}>
+                                    {tab}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Main Content */}
+                    <main className="p-8 grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        
+                        {/* Panel Izquierdo: Reloj */}
+                        <div className="lg:col-span-4 bg-white rounded-2xl p-8 shadow-sm border border-slate-100">
+                            <div className="flex items-center gap-2 text-blue-600 mb-2">
+                                <Clock size={20} />
+                                <h2 className="font-bold text-slate-700">Registro de Asistencia</h2>
+                            </div>
+                            <p className="text-xs text-slate-400 mb-8 capitalize">{formatDate(time)}</p>
+                            
+                            <div className="text-center py-6">
+                                <span className="text-6xl font-black text-slate-800 tracking-tighter">
+                                    {formatTime(time)}
+                                </span>
+                            </div>
+
+                            <div className="mt-8 space-y-4">
+                                <label className="flex items-center gap-2 text-xs font-bold text-slate-600">
+                                    <User size={14} /> Seleccionar Empleado
+                                </label>
+                                <select className="w-full bg-slate-50 border border-slate-200 rounded-lg p-3 text-sm text-slate-500 outline-none focus:ring-2 focus:ring-blue-100 transition-all">
+                                    <option>-- Seleccione un empleado --</option>
+                                </select>
+                                
+                                <div className="grid grid-cols-2 gap-4 pt-4">
+                                    <button className="bg-[#86d7a1] hover:bg-[#75c490] text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all">
+                                        <span className="text-lg">➔</span> Entrada
+                                    </button>
+                                    <button className="bg-[#f28b8b] hover:bg-[#e67a7a] text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 shadow-sm transition-all">
+                                        <span className="text-lg">➔</span> Salida
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Panel Derecho: Stats */}
+                        <div className="lg:col-span-8 space-y-6">
+                            {/* Top Stats Cards */}
+                            <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                                <StatCard label="Total Empleados" value="1" icon={<Users className="text-blue-600" size={20}/>} bg="bg-blue-50" />
+                                <StatCard label="Asistencias" value="0" icon={<CheckCircle className="text-emerald-500" size={20}/>} bg="bg-emerald-50" />
+                                <StatCard label="Ausencias" value="0" icon={<XCircle className="text-red-500" size={20}/>} bg="bg-red-50" />
+                                <StatCard label="Tardanzas" value="1" icon={<AlarmClock className="text-amber-500" size={20}/>} bg="bg-amber-50" />
+                            </div>
+
+                            {/* Additional Metrics */}
+                            <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-100">
+                                <h3 className="font-bold text-slate-700 mb-6">Métricas Adicionales</h3>
+                                <div className="grid grid-cols-3 gap-8">
+                                    <div>
+                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">Promedio de Horas</p>
+                                        <p className="text-2xl font-bold text-blue-600">N/A</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">Tasa de Asistencia</p>
+                                        <p className="text-2xl font-bold text-emerald-500">0.0%</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">Total Registros</p>
+                                        <p className="text-2xl font-bold text-purple-600">1</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </main>
+                </div>
+            );
+        }
+
+        function StatCard({ label, value, icon, bg }) {
+            return (
+                <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between">
+                    <div>
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">{label}</p>
+                        <p className="text-2xl font-black text-slate-800">{value}</p>
+                    </div>
+                    <div className={`${bg} p-2.5 rounded-xl`}>
+                        {icon}
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
