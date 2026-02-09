@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Sistema de Asistencias</title>
+    <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+
+<header class="topbar">
+    <div class="logo">
+        <div class="logo-icon">🏢</div>
+        <div>
+            <h1>Sistema de Asistencias</h1>
+            <span>Gestión de asistencia de empleados</span>
+        </div>
+    </div>
+
+    <div class="user-info">
+        <div>
+            <strong>Administrador</strong><br/>
+            <small>#RCPR7273</small>
+        </div>
+        <button class="logout">Cerrar sesión</button>
+    </div>
+</header>
+
+<nav class="tabs">
+    <a class="active">Registro</a>
+    <a>Empleados</a>
+    <a>Historial</a>
+    <a>Estadísticas</a>
+</nav>
+
+<main class="container">
+
+    <!-- Panel de registro -->
+    <section class="card main-card">
+        <div class="card-header">
+            <div class="icon">🕒</div>
+            <div>
+                <h2>Registro de Asistencia</h2>
+                <span id="fecha"></span>
+            </div>
+        </div>
+
+        <div class="clock" id="reloj">00:00:00</div>
+
+        <label>Seleccionar Empleado</label>
+        <select>
+            <option>-- Seleccione un empleado --</option>
+            <option>Juan Pérez</option>
+            <option>Ana López</option>
+        </select>
+
+        <div class="buttons">
+            <button class="btn entrada">Entrada</button>
+            <button class="btn salida">Salida</button>
+        </div>
+    </section>
+
+    <!-- Métricas -->
+    <section class="stats">
+        <div class="stat-card">
+            <h4>Total Empleados</h4>
+            <div class="stat">0</div>
+        </div>
+        <div class="stat-card">
+            <h4>Asistencias</h4>
+            <div class="stat">0</div>
+        </div>
+        <div class="stat-card">
+            <h4>Ausencias</h4>
+            <div class="stat">0</div>
+        </div>
+        <div class="stat-card">
+            <h4>Tardanzas</h4>
+            <div class="stat">0</div>
+        </div>
+    </section>
+
+    <section class="card metrics">
+        <h3>Métricas Adicionales</h3>
+        <div class="metrics-grid">
+            <div>
+                <span>Promedio de Horas</span>
+                <h2>N/A</h2>
+            </div>
+            <div>
+                <span>Tasa de Asistencia</span>
+                <h2 class="green">0%</h2>
+            </div>
+            <div>
+                <span>Total Registros</span>
+                <h2 class="purple">0</h2>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
